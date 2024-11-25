@@ -1,0 +1,14 @@
+version: "2"
+sql:
+  - engine: "postgresql"
+    queries:
+      - "./db/queries/public"
+      - "./db/queries/tenant"
+    schema:
+      - "./db/migrations/public/"
+      - "./db/migrations/tenant/"
+    gen:
+      go:
+        package: "db_sqlc"
+        out: "./db/sqlc"
+        sql_package: "database/sql"

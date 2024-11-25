@@ -1,0 +1,20 @@
+services:
+  psql:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: ${DOCKER_DB_DATABASE}
+      POSTGRES_USER: ${DOCKER_DB_USERNAME}
+      POSTGRES_PASSWORD: ${DOCKER_DB_PASSWORD}
+    ports:
+      - '${DOCKER_DB_PORT}:5432'
+    volumes:
+      - psql_volume:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${DOCKER_DB_USERNAME} -d ${DOCKER_DB_DATABASE}']
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: ${DOCKER_DB_RESTART_POLICY:-unless-stopped}
+
+volumes:
+  psql_volume:
